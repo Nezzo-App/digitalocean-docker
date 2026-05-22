@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nezzo Wiki - Dokumentation & Handbuch</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/app.css">
+    <style>
+        .wiki-container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        .wiki-nav { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .wiki-nav a { padding: 0.5rem 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); transition: var(--transition); }
+        .wiki-nav a:hover { background: var(--primary-color); color: white; }
+        .wiki-section { margin-bottom: 3rem; }
+        .wiki-section h2 { color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+        .wiki-content { line-height: 1.8; }
+        .wiki-content code { background: var(--bg-dark); color: #f8fafc; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); }
+        .wiki-content pre { background: var(--bg-dark); color: #f8fafc; padding: 1.5rem; border-radius: var(--radius-lg); overflow-x: auto; }
+        .api-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .api-table th, .api-table td { padding: 1rem; border: 1px solid var(--border-color); text-align: left; }
+        .api-table th { background: var(--bg-secondary); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">Nezzo</span></a>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#apps">Apps</a></li>
+                <li><a href="/download">Download</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/" class="btn btn-outline">Zurück zur Startseite</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="app-page">
+        <div class="app-header">
+            <div class="app-badge">📚 Wiki</div>
+            <h1>Nezzo Wiki</h1>
+            <p>Dokumentation, Handbücher und API-Referenzen</p>
+        </div>
+
+        <div class="wiki-container">
+            <div class="wiki-nav">
+                <a href="#intro">Einführung</a>
+                <a href="#apps">Apps</a>
+                <a href="#api">API</a>
+                <a href="#docker">Docker</a>
+                <a href="#faq">FAQ</a>
+            </div>
+
+            <section id="intro" class="wiki-section">
+                <h2>Einführung</h2>
+                <div class="wiki-content">
+                    <p>Willkommen im Nezzo Wiki! Hier findest du umfassende Dokumentation zu allen Nezzo App Funktionen.</p>
+                    <p><strong>Nezzo App</strong> ist eine All-in-One-Plattform entwickelt von <strong>LobiGmbh (CEO)</strong> und <strong>JoviGmbh (COO)</strong>.</p>
+                    <h3>Was ist Nezzo?</h3>
+                    <p>Nezzo vereint sieben mächtige Anwendungen:</p>
+                    <ul>
+                        <li>🧠 <strong>Nezzo AI</strong> - KI-gestützte Antworten mit Grok API</li>
+                        <li>💬 <strong>Nezzo Chat</strong> - Intelligente Konversationen</li>
+                        <li>☁️ <strong>Nezzo Cloud</strong> - Sichere Cloud-Speicherung</li>
+                        <li>🌐 <strong>Nezzo Host</strong> - Webhosting-Lösungen</li>
+                        <li>📚 <strong>Nezzo Vocab</strong> - Vokabeltrainer</li>
+                        <li>💻 <strong>Nezzo Code</strong> - Code-Editor & Snippets</li>
+                        <li>📝 <strong>Nezzo Text</strong> - Textverarbeitung</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="apps" class="wiki-section">
+                <h2>Apps Dokumentation</h2>
+                <div class="wiki-content">
+                    <h3>Nezzo AI</h3>
+                    <p>Nutzt die Grok API von x.ai für intelligente Textgenerierung.</p>
+                    <pre><code>POST /api/ai/generate
+Body: { "prompt": "Deine Frage" }</code></pre>
+
+                    <h3>Nezzo Chat</h3>
+                    <p>Führe kontextbewusste Gespräche mit der KI.</p>
+                    <pre><code>POST /api/chat/session - Neue Session erstellen
+POST /api/chat/message - Nachricht senden</code></pre>
+
+                    <h3>Nezzo Cloud</h3>
+                    <p>Lade Dateien sicher in die Cloud hoch.</p>
+                    <pre><code>POST /api/cloud/upload
+Body: { "filename": "datei.txt", "content": "Inhalt" }</code></pre>
+
+                    <h3>Nezzo Host</h3>
+                    <p>Deploye Websites mit einem Klick.</p>
+                    <pre><code>POST /api/host/deploy
+Body: { "name": "Meine Seite", "content": "HTML" }</code></pre>
+
+                    <h3>Nezzo Vocab</h3>
+                    <p>Erstelle Vokabelsets und lerne effizient.</p>
+                    <pre><code>POST /api/vocab/set
+Body: { "name": "Englisch", "words": [...] }</code></pre>
+
+                    <h3>Nezzo Code</h3>
+                    <p>Speichere und teile Code-Snippets.</p>
+                    <pre><code>POST /api/code/snippet
+Body: { "title": "Hello World", "code": "...", "language": "javascript" }</code></pre>
+
+                    <h3>Nezzo Text</h3>
+                    <p>Verarbeite und analysiere Texte.</p>
+                    <pre><code>POST /api/text/document
+Body: { "title": "Notiz", "content": "Text" }</code></pre>
+                </div>
+            </section>
+
+            <section id="api" class="wiki-section">
+                <h2>API Referenz</h2>
+                <div class="wiki-content">
+                    <table class="api-table">
+                        <thead>
+                            <tr><th>Endpoint</th><th>Methode</th><th>Beschreibung</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>/api/health</td><td>GET</td><td>Systemstatus prüfen</td></tr>
+                            <tr><td>/api/ai/generate</td><td>POST</td><td>AI Text generieren</td></tr>
+                            <tr><td>/api/ai/chat</td><td>POST</td><td>AI Chat Nachricht</td></tr>
+                            <tr><td>/api/chat/session</td><td>POST</td><td>Chat Session erstellen</td></tr>
+                            <tr><td>/api/cloud/upload</td><td>POST</td><td>Datei hochladen</td></tr>
+                            <tr><td>/api/cloud/files</td><td>GET</td><td>Alle Dateien auflisten</td></tr>
+                            <tr><td>/api/host/deploy</td><td>POST</td><td>Website deployen</td></tr>
+                            <tr><td>/api/vocab/set</td><td>POST</td><td>Vokabelset erstellen</td></tr>
+                            <tr><td>/api/code/snippet</td><td>POST</td><td>Code Snippet erstellen</td></tr>
+                            <tr><td>/api/text/document</td><td>POST</td><td>Dokument erstellen</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="docker" class="wiki-section">
+                <h2>Docker Installation</h2>
+                <div class="wiki-content">
+                    <h3>Voraussetzungen</h3>
+                    <ul>
+                        <li>Docker & Docker Compose installiert</li>
+                        <li>Grok API Key (von x.ai)</li>
+                    </ul>
+
+                    <h3>Installation</h3>
+                    <pre><code># Clone Repository
+git clone https://github.com/nezzo-app/nezzo.git
+cd nezzo-app/docker
+
+# Umgebungsvariablen setzen
+cp ../.env.example .env
+# Bearbeite .env und füge deinen GROK_API_KEY ein
+
+# Starten
+docker-compose up -d
+
+# Logs ansehen
+docker-compose logs -f</code></pre>
+
+                    <h3>Zugriff</h3>
+                    <p>Nach dem Start ist Nezzo App verfügbar unter: <code>http://localhost:80</code></p>
+                </div>
+            </section>
+
+            <section id="faq" class="wiki-section">
+                <h2>Häufige Fragen (FAQ)</h2>
+                <div class="wiki-content">
+                    <h3>Wie bekomme ich einen Grok API Key?</h3>
+                    <p>Registriere dich auf <a href="https://x.ai">x.ai</a> und erstelle einen API Key.</p>
+
+                    <h3>Ist Nezzo App kostenlos?</h3>
+                    <p>Ja, Nezzo App ist Open Source und kostenlos nutzbar.</p>
+
+                    <h3>Kann ich Nezzo selbst hosten?</h3>
+                    <p>Ja! Mit Docker Compose kannst du Nezzo einfach selbst hosten.</p>
+
+                    <h3>Wer entwickelt Nezzo?</h3>
+                    <p>Nezzo wird entwickelt von LobiGmbh (CEO) und JoviGmbh (COO).</p>
+
+                    <h3>Welche Sprachen werden unterstützt?</h3>
+                    <p>Die Oberfläche ist auf Deutsch, die KI (Grok) unterstützt multiple Sprachen.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Nezzo App. CEO: LobiGmbh | COO: JoviGmbh</p>
+        </div>
+    </footer>
+</body>
+</html>

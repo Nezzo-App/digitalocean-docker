@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nezzo Chat - Intelligente Konversationen</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/app.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">Nezzo</span></a>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#apps">Apps</a></li>
+                <li><a href="/wiki">Wiki</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/" class="btn btn-outline">Zurück zur Startseite</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="app-page chat-page">
+        <div class="app-header">
+            <div class="app-badge">💬 Chat</div>
+            <h1>Nezzo Chat</h1>
+            <p>Führe intelligente Gespräche mit unserer KI</p>
+        </div>
+
+        <div class="app-container">
+            <div class="chat-container" style="max-width: 800px; margin: 0 auto;">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message system">
+                        <div class="message-content">
+                            <strong>Willkommen bei Nezzo Chat!</strong>
+                            <p>Starte eine Konversation mit unserer KI. Jede Nachricht wird im Kontext des Gesprächs verstanden.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <textarea id="messageInput" placeholder="Schreibe deine Nachricht..." rows="3"></textarea>
+                    <button id="sendBtn" class="btn btn-primary">Senden 🚀</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Nezzo App. CEO: LobiGmbh | COO: JoviGmbh</p>
+        </div>
+    </footer>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        let sessionId = null;
+        let isLoading = false;
+
+        async function initChat() {
+            try {
+                const response = await fetch('/api/chat/session', { method: 'POST' });
+                const data = await response.json();
+                if (data.success) {
+                    sessionId = data.sessionId;
+                    console.log('Chat session created:', sessionId);
+                }
+            } catch (error) {
+                console.error('Failed to create session:', error);
+            }
+        }
+
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+            messageDiv.innerHTML = `<div class="message-content">${content}</div>`;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message || isLoading) return;
+
+            addMessage(`<p>${message.replace(/\n/g, '<br>')}</p>`, true);
+            messageInput.value = '';
+            isLoading = true;
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Lädt...';
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message ai loading';
+            loadingDiv.innerHTML = '<div class="message-content"><p>🤔 Tippt...</p></div>';
+            chatMessages.appendChild(loadingDiv);
+
+            try {
+                if (sessionId) {
+                    await fetch('/api/chat/message', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ sessionId, message, role: 'user' })
+                    });
+                }
+
+                const response = await fetch('/api/ai/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: message }]
+                    })
+                });
+
+                const data = await response.json();
+                chatMessages.removeChild(loadingDiv);
+
+                if (data.success) {
+                    const formattedContent = data.data
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\n/g, '<br>');
+                    addMessage(`<p>${formattedContent}</p>`);
+                    
+                    if (sessionId) {
+                        await fetch('/api/chat/message', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ sessionId, message: data.data, role: 'assistant' })
+                        });
+                    }
+                } else {
+                    addMessage(`<p class="error">❌ Fehler: ${data.error}</p>`);
+                }
+            } catch (error) {
+                chatMessages.removeChild(loadingDiv);
+                addMessage(`<p class="error">❌ Netzwerkfehler: ${error.message}</p>`);
+            } finally {
+                isLoading = false;
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Senden 🚀';
+            }
+        }
+
+        initChat();
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

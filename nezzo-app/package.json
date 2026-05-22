@@ -1,0 +1,34 @@
+{
+  "name": "nezzo-app",
+  "version": "1.0.0",
+  "description": "Nezzo App - Complete Platform with AI, Chat, Cloud, Host, Vocab, Code, and Text",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "build": "echo 'Building production assets...'",
+    "test": "echo 'Running tests...'"
+  },
+  "keywords": [
+    "nezzo",
+    "ai",
+    "chat",
+    "cloud",
+    "host",
+    "vocab",
+    "code",
+    "text"
+  ],
+  "author": "LobiGmbh (CEO) & JoviGmbh (CO)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
