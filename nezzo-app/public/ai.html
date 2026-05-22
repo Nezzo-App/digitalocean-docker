@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nezzo AI - Künstliche Intelligenz powered by Grok</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/app.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Nezzo</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#apps">Apps</a></li>
+                <li><a href="/wiki">Wiki</a></li>
+                <li><a href="/download">Download</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/" class="btn btn-outline">Zurück zur Startseite</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="app-page">
+        <div class="app-header">
+            <div class="app-badge">🧠 KI-Powered</div>
+            <h1>Nezzo AI</h1>
+            <p>Künstliche Intelligenz der nächsten Generation - angetrieben von Grok API</p>
+        </div>
+
+        <div class="app-container">
+            <div class="ai-interface">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message system">
+                            <div class="message-content">
+                                <strong>Willkommen bei Nezzo AI!</strong>
+                                <p>Ich bin deine KI-Assistentin, powered by Grok API. Wie kann ich dir heute helfen?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <textarea 
+                            id="promptInput" 
+                            placeholder="Stelle eine Frage oder beschreibe eine Aufgabe..."
+                            rows="3"
+                        ></textarea>
+                        <button id="sendBtn" class="btn btn-primary">
+                            Senden 🚀
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ai-features">
+                    <h3>AI-Funktionen</h3>
+                    <div class="feature-list">
+                        <div class="feature-item" onclick="useTemplate('Erkläre mir')">
+                            <span class="feature-icon">💡</span>
+                            <span>Erklärungen</span>
+                        </div>
+                        <div class="feature-item" onclick="useTemplate('Schreibe einen Text über')">
+                            <span class="feature-icon">✍️</span>
+                            <span>Texte schreiben</span>
+                        </div>
+                        <div class="feature-item" onclick="useTemplate('Übersetze ins Englische:')">
+                            <span class="feature-icon">🌐</span>
+                            <span>Übersetzung</span>
+                        </div>
+                        <div class="feature-item" onclick="useTemplate('Generiere Code für:')">
+                            <span class="feature-icon">💻</span>
+                            <span>Code generieren</span>
+                        </div>
+                        <div class="feature-item" onclick="useTemplate('Fasse zusammen:')">
+                            <span class="feature-icon">📝</span>
+                            <span>Zusammenfassung</span>
+                        </div>
+                        <div class="feature-item" onclick="useTemplate('Analysiere folgenden Text:')">
+                            <span class="feature-icon">🔍</span>
+                            <span>Textanalyse</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="app-info">
+            <div class="container">
+                <h2>Über Nezzo AI</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>🤖 Grok Integration</h3>
+                        <p>Nezzo AI nutzt die fortschrittliche Grok API von x.ai für präzise und kontextbewusste Antworten.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>⚡ Echtzeit-Antworten</h3>
+                        <p>Erhalte sofortige Antworten auf deine Fragen - schnell und zuverlässig.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🔒 Sicher & Privat</h3>
+                        <p>Deine Daten werden sicher verarbeitet und nicht für Training verwendet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Nezzo App. CEO: LobiGmbh | COO: JoviGmbh</p>
+        </div>
+    </footer>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const promptInput = document.getElementById('promptInput');
+        const sendBtn = document.getElementById('sendBtn');
+        let isLoading = false;
+
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    ${content}
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function useTemplate(template) {
+            promptInput.value = template + ' ';
+            promptInput.focus();
+        }
+
+        async function sendMessage() {
+            const prompt = promptInput.value.trim();
+            if (!prompt || isLoading) return;
+
+            addMessage(`<p>${prompt.replace(/\n/g, '<br>')}</p>`, true);
+            promptInput.value = '';
+            isLoading = true;
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Lädt...';
+
+            // Add loading message
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message ai loading';
+            loadingDiv.innerHTML = '<div class="message-content"><p>🤔 Denke nach...</p></div>';
+            chatMessages.appendChild(loadingDiv);
+
+            try {
+                const response = await fetch('/api/ai/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
+
+                const data = await response.json();
+                
+                // Remove loading message
+                chatMessages.removeChild(loadingDiv);
+
+                if (data.success) {
+                    // Convert markdown-like formatting to HTML
+                    const formattedContent = data.data
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                        .replace(/`(.*?)`/g, '<code>$1</code>')
+                        .replace(/\n/g, '<br>');
+                    addMessage(`<p>${formattedContent}</p>`);
+                } else {
+                    addMessage(`<p class="error">❌ Fehler: ${data.error || 'Etwas ist schief gelaufen'}</p>`);
+                }
+            } catch (error) {
+                chatMessages.removeChild(loadingDiv);
+                addMessage(`<p class="error">❌ Netzwerkfehler: ${error.message}</p>`);
+            } finally {
+                isLoading = false;
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Senden 🚀';
+            }
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        promptInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        console.log('🧠 Nezzo AI loaded - Powered by Grok');
+    </script>
+</body>
+</html>

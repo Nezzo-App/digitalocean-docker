@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nezzo Download - Jetzt herunterladen</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/app.css">
+    <style>
+        .download-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; }
+        .download-card { background: white; padding: 2rem; border-radius: var(--radius-xl); text-align: center; box-shadow: var(--shadow-lg); transition: var(--transition); }
+        .download-card:hover { transform: translateY(-5px); }
+        .download-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .download-btn { display: inline-block; margin-top: 1rem; padding: 1rem 2rem; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; text-decoration: none; border-radius: var(--radius-md); font-weight: 600; }
+        .system-req { background: var(--bg-secondary); padding: 2rem; border-radius: var(--radius-xl); margin-top: 3rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo"><span class="logo-icon">⚡</span><span class="logo-text">Nezzo</span></a>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#apps">Apps</a></li>
+                <li><a href="/wiki">Wiki</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/" class="btn btn-outline">Zurück zur Startseite</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="app-page">
+        <div class="app-header">
+            <div class="app-badge">📥 Download</div>
+            <h1>Nezzo Herunterladen</h1>
+            <p>Wähle deine Plattform und starte durch</p>
+        </div>
+
+        <div class="app-container">
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="download-icon">🐳</div>
+                    <h3>Docker</h3>
+                    <p>Empfohlene Methode - Einfach und schnell</p>
+                    <code style="display:block; background:var(--bg-dark); color:#f8fafc; padding:1rem; border-radius:var(--radius-md); margin:1rem 0;">docker-compose up -d</code>
+                    <a href="https://github.com/nezzo-app/nezzo" class="download-btn">GitHub Repository</a>
+                </div>
+                <div class="download-card">
+                    <div class="download-icon">📦</div>
+                    <h3>NPM Package</h3>
+                    <p>Für Entwickler</p>
+                    <code style="display:block; background:var(--bg-dark); color:#f8fafc; padding:1rem; border-radius:var(--radius-md); margin:1rem 0;">npm install nezzo-app</code>
+                    <a href="#" class="download-btn">NPM Coming Soon</a>
+                </div>
+                <div class="download-card">
+                    <div class="download-icon">💻</div>
+                    <h3>Source Code</h3>
+                    <p>Vollständiger Quellcode</p>
+                    <code style="display:block; background:var(--bg-dark); color:#f8fafc; padding:1rem; border-radius:var(--radius-md); margin:1rem 0;">git clone repo</code>
+                    <a href="https://github.com/nezzo-app/nezzo" class="download-btn">GitHub Klonen</a>
+                </div>
+            </div>
+
+            <div class="system-req">
+                <h2>Systemvoraussetzungen</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                    <div>
+                        <strong>🐳 Docker</strong>
+                        <p style="color: var(--text-secondary);">Docker 20.10+</p>
+                    </div>
+                    <div>
+                        <strong>📦 Node.js</strong>
+                        <p style="color: var(--text-secondary);">Version 18 oder höher</p>
+                    </div>
+                    <div>
+                        <strong>🔑 API Key</strong>
+                        <p style="color: var(--text-secondary);">Grok API von x.ai</p>
+                    </div>
+                    <div>
+                        <strong>💾 RAM</strong>
+                        <p style="color: var(--text-secondary);">Mindestens 2GB</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; text-align: center;">
+                <h2>Schnellstart mit Docker</h2>
+                <pre style="background: var(--bg-dark); color: #f8fafc; padding: 2rem; border-radius: var(--radius-xl); overflow-x: auto; max-width: 800px; margin: 1.5rem auto;"><code># 1. Repository klonen
+git clone https://github.com/nezzo-app/nezzo.git
+cd nezzo-app/docker
+
+# 2. Umgebungsvariablen setzen
+cp ../.env.example .env
+# Bearbeite .env und füge deinen GROK_API_KEY ein
+
+# 3. Starten
+docker-compose up -d
+
+# 4. Öffne http://localhost:80</code></pre>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Nezzo App. CEO: LobiGmbh | COO: JoviGmbh</p>
+        </div>
+    </footer>
+</body>
+</html>
